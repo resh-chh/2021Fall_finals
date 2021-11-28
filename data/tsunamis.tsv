@@ -1,29 +1,28 @@
-"Search Parameters"	"Year"	"Mo"	"Dy"	"Hr"	"Mn"	"Sec"	"Tsunami Event Validity"	"Tsunami Cause Code"	"Earthquake Magnitude"	"Vol"	"More Info"	"Deposits"	"Country"	"Location Name"	"Latitude"	"Longitude"	"Maximum Water Height (m)"	"Number of Runups"	"Tsunami Magnitude (Abe)"	"Tsunami Magnitude (Iida)"	"Tsunami Intensity"	"Deaths"	"Death Description"	"Missing"	"Missing Description"	"Injuries"	"Injuries Description"	"Damage ($Mil)"	"Damage Description"	"Houses Destroyed"	"Houses Destroyed Description"	"Houses Damaged"	"Houses Damaged Description"	"Total Deaths"	"Total Death Description"	"Total Missing"	"Total Missing Description"	"Total Injuries"	"Total Injuries Description"	"Total Damage ($Mil)"	"Total Damage Description"	"Total Houses Destroyed"	"Total Houses Destroyed Description"	"Total Houses Damaged"	"Total Houses Damaged Description"
-"[""Year >= 2000"",""Country = USA""]"																																													
-	2000	11	4	19	30	0	1	8				0	"USA"	"POINT ARGUELLO, S. CALIFORNIA"	34.5	-120.65	4.6	1											1												1				
-	2003	11	17	6	43	6.8	4	1	7.8			0	"USA"	"RAT ISLANDS, ALEUTIAN ISLANDS, AK"	51.146	178.65	0.33	20																							1				
-	2005	6	15	2	50	53.1	4	1	7.2			0	"USA"	"N. CALIFORNIA"	41.301	-125.97	0.1	5																											
-	2006	1	16				0	8				0	"USA"	"COLUMBIA RIVER VALLEY, WA"			9	1											1												1				
-	2006	10	15	17	7	49.2	4	1	6.7			0	"USA"	"HAWAII"	19.878	-155.935	0.1	1																					3		2				
-	2007	8	2	3	21	42.8	4	1	6.7			0	"USA"	"ALEUTIAN ISLANDS, AK"	51.307	-179.971	0.03	1																											
-	2008	8	8				4	6		4924		0	"USA"	"KASATOCHI VOLCANO, ALEUTIAN IS, AK"	52.18	-175.5	0.19	2																											
-	2008	10	28				3	9				0	"USA"	"MAINE"	43.8	-69.7	3.6	5										0.02	1											0.02	1				
-	2009	8	25				0	8				0	"USA"	"COLUMBIA RIVER VALLEY, WA"				1											1												1				
-	2011	6	24	3	9	39.4	4	1	7.3			0	"USA"	"ATKA, ALEUTIAN ISLANDS, AK"	52.05	-171.836	0.1	7																											
-	2011	9	2	10	55	53.5	4	1	6.8			0	"USA"	"FOX ISLANDS, ALEUTIAN ISLANDS, AK"	52.171	-171.708	0.06	1																											
-	2013	1	5	8	58	19.3	4	1	7.5			0	"USA"	"SE. ALASKA, AK"	55.393	-134.652	1.5	8											1												1				
-	2013	6	13				4	9				0	"USA"	"NORTHWEST ATLANTIC OCEAN"			1.8	38								2	1											2	1						
-	2014	6	23	20	53	7	4	1	7.9			0	"USA"	"ALEUTIAN ISLANDS, AK"	51.849	178.735	0.17	20																											
-	2014	7	25	10	55	12	4	1	6.1			0	"USA"	"PALMA BAY, AK"	58.306	-136.96	0.08	1																											
-	2015	7	27	4	49	0	4	1	6.9			0	"USA"	"FOX ISLANDS, ALEUTIAN ISLANDS, AK"	52.214	-169.399	0.08	2																											
-	2015	10	18	5	19		4	8				1	"USA"	"ICY BAY, AK"	60.08	-141.3	193	3																											
-	2017	5	1	12	31	3	4	1	6.2			0	"USA"	"SKAGWAY, AK"	59.852	-136.677	0.06	1																											
-	2018	1	23	9	32	29	4	1	7.9			0	"USA"	"KODIAK ISLAND, AK"	56.004	-149.166	0.25	64																							1				
-	2018	5	4	22	32	37	4	4	6.9	6864		0	"USA"	"HAWAII"	19.313	-154.998	0.4	7																				1	1	370	4	716	3		
-	2018	5	15				4	9				0	"USA"	"NORTHEAST U.S.A."			0.22	10																							1				
-	2019	4	14	23	17		4	9				0	"USA"	"LAKE ERIE"			1.75	2											1												1				
-	2020	4	23				4	9				0	"USA"	"GULF OF MEXICO"			0.5	1																											
-	2020	6	13				4	9				0	"USA"	"GULF OF MEXICO"			0.5	1																											
-	2020	7	22	6	12	44	4	1	7.8			0	"USA"	"SHUMAGIN ISLANDS, AK"	55.03	-158.522	0.24	3																							1				
-	2020	10	19	20	54	39	4	1	7.6			0	"USA"	"SHUMAGIN ISLANDS, AK"	54.608	-159.655	0.76	15																											
-	2021	7	29	6	15	47	4	1	8.2			0	"USA"	"KODIAK ISLAND, AK"	55.325	-157.841	0.5	10																											
+Year	Mo	Dy	Hr	Mn	Sec	Tsunami Event Validity	Tsunami Cause Code	Earthquake Magnitude	Vol	More Info	Deposits	Country	Location Name	Latitude	Longitude	Maximum Water Height (m)	Number of Runups	Tsunami Magnitude (Abe)	Tsunami Magnitude (Iida)	Tsunami Intensity	Deaths	Death Description	Missing	Missing Description	Injuries	Injuries Description	Damage ($Mil)	Damage Description	Houses Destroyed	Houses Destroyed Description	Houses Damaged	Houses Damaged Description	Total Deaths	Total Death Description	Total Missing	Total Missing Description	Total Injuries	Total Injuries Description	Total Damage ($Mil)	Total Damage Description	Total Houses Destroyed	Total Houses Destroyed Description	Total Houses Damaged	Total Houses Damaged Description
+2000	11	4	19	30	0	1	8				0	USA	"POINT ARGUELLO, S. CALIFORNIA"	34.5	-120.65	4.6	1											1												1				
+2003	11	17	6	43	6.8	4	1	7.8			0	USA	"RAT ISLANDS, ALEUTIAN ISLANDS, AK"	51.146	178.65	0.33	20																							1				
+2005	6	15	2	50	53.1	4	1	7.2			0	USA	N. CALIFORNIA	41.301	-125.97	0.1	5																											
+2006	1	16				0	8				0	USA	"COLUMBIA RIVER VALLEY, WA"			9	1											1												1				
+2006	10	15	17	7	49.2	4	1	6.7			0	USA	HAWAII	19.878	-155.935	0.1	1																					3		2				
+2007	8	2	3	21	42.8	4	1	6.7			0	USA	"ALEUTIAN ISLANDS, AK"	51.307	-179.971	0.03	1																											
+2008	8	8				4	6		4924		0	USA	"KASATOCHI VOLCANO, ALEUTIAN IS, AK"	52.18	-175.5	0.19	2																											
+2008	10	28				3	9				0	USA	MAINE	43.8	-69.7	3.6	5										0.02	1											0.02	1				
+2009	8	25				0	8				0	USA	"COLUMBIA RIVER VALLEY, WA"				1											1												1				
+2011	6	24	3	9	39.4	4	1	7.3			0	USA	"ATKA, ALEUTIAN ISLANDS, AK"	52.05	-171.836	0.1	7																											
+2011	9	2	10	55	53.5	4	1	6.8			0	USA	"FOX ISLANDS, ALEUTIAN ISLANDS, AK"	52.171	-171.708	0.06	1																											
+2013	1	5	8	58	19.3	4	1	7.5			0	USA	"SE. ALASKA, AK"	55.393	-134.652	1.5	8											1												1				
+2013	6	13				4	9				0	USA	NORTHWEST ATLANTIC OCEAN			1.8	38								2	1											2	1						
+2014	6	23	20	53	7	4	1	7.9			0	USA	"ALEUTIAN ISLANDS, AK"	51.849	178.735	0.17	20																											
+2014	7	25	10	55	12	4	1	6.1			0	USA	"PALMA BAY, AK"	58.306	-136.96	0.08	1																											
+2015	7	27	4	49	0	4	1	6.9			0	USA	"FOX ISLANDS, ALEUTIAN ISLANDS, AK"	52.214	-169.399	0.08	2																											
+2015	10	18	5	19		4	8				1	USA	"ICY BAY, AK"	60.08	-141.3	193	3																											
+2017	5	1	12	31	3	4	1	6.2			0	USA	"SKAGWAY, AK"	59.852	-136.677	0.06	1																											
+2018	1	23	9	32	29	4	1	7.9			0	USA	"KODIAK ISLAND, AK"	56.004	-149.166	0.25	64																							1				
+2018	5	4	22	32	37	4	4	6.9	6864		0	USA	HAWAII	19.313	-154.998	0.4	7																				1	1	370	4	716	3		
+2018	5	15				4	9				0	USA	NORTHEAST U.S.A.			0.22	10																							1				
+2019	4	14	23	17		4	9				0	USA	LAKE ERIE			1.75	2											1												1				
+2020	4	23				4	9				0	USA	GULF OF MEXICO			0.5	1																											
+2020	6	13				4	9				0	USA	GULF OF MEXICO			0.5	1																											
+2020	7	22	6	12	44	4	1	7.8			0	USA	"SHUMAGIN ISLANDS, AK"	55.03	-158.522	0.24	3																							1				
+2020	10	19	20	54	39	4	1	7.6			0	USA	"SHUMAGIN ISLANDS, AK"	54.608	-159.655	0.76	15																											
+2021	7	29	6	15	47	4	1	8.2			0	USA	"KODIAK ISLAND, AK"	55.325	-157.841	0.5	10																											
