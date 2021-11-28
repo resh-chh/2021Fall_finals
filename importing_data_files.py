@@ -4,7 +4,7 @@ and formatting the columns as per their data types for the main processing.
 """
 import pandas as pd
 
-dateparser = lambda x: pd.to_datetime(x, errors='coerce', format='%m%d%Y')
+dateparser = lambda x: pd.to_datetime(x, errors='coerce', format='%m/%d/%Y')
 
 storm_dtypes = {'EVENT_ID': 'Int64',
                 'DEATHS_DIRECT': 'Int16',
@@ -26,15 +26,18 @@ hurricanes_data = pd.read_csv('data/hurricanes.csv', header=0,
                               dtype=storm_dtypes,
                               date_parser=dateparser,
                               parse_dates=['BEGIN_DATE', 'END_DATE'])
+hurricanes_data['Year'] = pd.DatetimeIndex(hurricanes_data['BEGIN_DATE']).year
 
 tornadoes_data = pd.read_csv('data/tornadoes.csv', header=0,
                              dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
+tornadoes_data['Year'] = pd.DatetimeIndex(tornadoes_data['BEGIN_DATE']).year
 
 wildfires_data = pd.read_csv('data/wildfires.csv', header=0, dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
+wildfires_data['Year'] = pd.DatetimeIndex(wildfires_data['BEGIN_DATE']).year
 
 earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0,
                               usecols=['Year', 'Mo', 'Dy', 'Hr', 'Mn', 'Sec', 'Tsu', 'Location Name',
