@@ -28,6 +28,20 @@ References:
 from importing_data_files import *
 
 
+def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_data: list):
+    yearly_event_count = pd.DataFrame({
+        'Year': range(2000, 2022)
+    })
+    for disaster_name in natural_disasters_order:
+        disaster_data_index = natural_disasters_order.index(disaster_name)
+        disaster = natural_disasters_data[disaster_data_index]
+        yearly_disaster_count = disaster.groupby(['Year']).size().reset_index(name=disaster_name)
+        yearly_event_count = pd.merge(yearly_event_count, yearly_disaster_count, how='left').fillna(0)
+        yearly_event_count = yearly_event_count.astype({disaster_name: 'Int16'})
+    print(yearly_event_count)
+
+
 if __name__ == '__main__':
-    print(tsunamis_data['State'])
-    # print(earthquake_state[0])
+    natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquake', 'Volcanoes']
+    natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data, volcanoes_data]
+    yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
