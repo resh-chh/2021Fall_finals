@@ -21,15 +21,14 @@ Hypotheses:
     Hypothesis II: One natural disaster can lead to another, for instance,
     Hurricanes can set off more destructive Earthquakes.
 
+References:
+    1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
+
 """
 import csv
 import pandas as pd
+from importing_data_files import *
 
 if __name__ == '__main__':
-    earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0)
-    tsunamis_data = pd.read_csv('data/tsunamis.tsv', sep='\t', header=0)
-    volcanoes_data = pd.read_csv('data/volcanoes.tsv', sep='\t', header=0)
-    tornadoes_data = pd.read_csv('data/tornadoes.csv', header=0)
-    hurricanes_data = pd.read_csv('data/hurricanes.csv', header=0)
-    wildfires_data = pd.read_csv('data/wildfires.csv', header=0)
-    GDP_by_state_data = pd.read_csv('data/GDP_by_state.csv', header=0)
+    print(state_codes)
+    # print(earthquake_data['Location Name'][])
