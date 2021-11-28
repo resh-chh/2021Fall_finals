@@ -38,10 +38,14 @@ def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_
         yearly_disaster_count = disaster.groupby(['Year']).size().reset_index(name=disaster_name)
         yearly_event_count = pd.merge(yearly_event_count, yearly_disaster_count, how='left').fillna(0)
         yearly_event_count = yearly_event_count.astype({disaster_name: 'Int16'})
+    yearly_event_count['Total'] = yearly_event_count['Hurricanes'] + yearly_event_count['Tornadoes'] + \
+                                  yearly_event_count['Wildfires'] + yearly_event_count['Tsunamis'] + \
+                                  yearly_event_count['Earthquakes'] + yearly_event_count['Volcanoes']
     print(yearly_event_count)
+    return yearly_event_count
 
 
 if __name__ == '__main__':
-    natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquake', 'Volcanoes']
+    natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
     natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data, volcanoes_data]
-    yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
+    yearly_event_summary = yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
