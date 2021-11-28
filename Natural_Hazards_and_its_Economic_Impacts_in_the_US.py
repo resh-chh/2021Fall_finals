@@ -25,10 +25,9 @@ References:
     1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
 
 """
-import csv
-import pandas as pd
 from importing_data_files import *
 
+
 if __name__ == '__main__':
-    print(state_codes)
-    # print(earthquake_data['Location Name'][])
+    print(tsunamis_data['State'])
+    # print(earthquake_state[0])
