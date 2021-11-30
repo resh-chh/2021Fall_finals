@@ -70,22 +70,18 @@ def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, ev
     plt.show()
 
 
-def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_val: int, event_list: list):
+def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_val: int, disaster_list: list):
     dataset_length = len(event_dataset_list)
     length_of_dataset = 0
+    statewise_event = pd.DataFrame(columns=['State'])
     while length_of_dataset < dataset_length:
-        if length_of_dataset == 0:
-            statewise_event = event_dataset_list[length_of_dataset][event_dataset_list[length_of_dataset]['Year'] ==
-                                            year_val].groupby(['State']).size().reset_index\
-                (name=event_list[length_of_dataset])
-            statewise_event = statewise_event.astype({event_list[length_of_dataset]: 'Int16'})
-        else:
-            statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
+        statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
                                         [length_of_dataset]['Year'] ==year_val].groupby(['State'])
                                        .size().reset_index(name=event_list[length_of_dataset]), how='outer').fillna(0)
-            statewise_event = statewise_event.astype({event_list[length_of_dataset]: 'Int16'})
+        statewise_event = statewise_event.astype({disaster_list[length_of_dataset]: 'Int16'})
         length_of_dataset += 1
     print(statewise_event)
+    return statewise_event
 
 
 def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
@@ -112,16 +108,36 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     return percentage_change_in_GDP
 
 
+def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame):
+    year_list = []
+    for year in event_counter['Year']:
+        year_val = event_counter.loc[event_counter['Year'] == year]
+        for event1 in year_val[disaster_list[0]]:
+            for event2 in year_val[disaster_list[1]]:
+                if event1 != 0 and event2 != 0:
+                    year_list.append(year)
+    # print(year_list)
+    return year_list
+
+
 if __name__ == '__main__':
     natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
-    natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data, volcanoes_data]
+    natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data,
+                              volcanoes_data]
     yearly_event_summary = yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
 
+    # plot the graph to show the occurrence of earthquakes and tsunamis each year from 2000-2021
     plot_yearwise_stacked_bar_graph(yearly_event_summary, 'Earthquakes', 'Tsunamis')
-    yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,['Earthquakes', 'Tsunamis'])
+    # find the list of years in which earthquakes and tsunamis occurred at the same time
+    event_list = ['Earthquakes', 'Tsunamis']
+    disaster_years = find_combined_disaster_year(event_list, yearly_event_summary)
+    # find the states in which the disasters occurred according to the years
+    yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,
+                                                                             ['Earthquakes', 'Tsunamis'])
 
     percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
-    event_summary_with_GDP = pd.merge(yearly_event_summary, percentage_change_in_GDP, left_on='Year', right_index=True, how='left')
+    event_summary_with_GDP = pd.merge(yearly_event_summary, percentage_change_in_GDP, left_on='Year', right_index=True,
+                                      how='left')
     event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
     # print(event_summary_with_GDP)
     # plt.plot(event_summary_with_GDP)
