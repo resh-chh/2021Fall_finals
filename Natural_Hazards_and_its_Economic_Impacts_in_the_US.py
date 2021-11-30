@@ -1,6 +1,8 @@
 r"""
 597PR Fall 2021 Final Project
 
+Topic: Natural Hazards and its Economic Impacts in the United States
+
 Instructor: John Weible, jweible@illinois.edu
 
 Collaborators:
@@ -30,7 +32,14 @@ from importing_data_files import *
 import matplotlib.pyplot as plt
 
 
-def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_data: list):
+def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_data: list) -> pd.DataFrame:
+    """
+    Calculates the count of each type of disaster in every year, from 2000 - 2021.
+
+    :param natural_disasters_order: list of disaster event types
+    :param natural_disasters_data: list of data sets for each disaster event in order
+    :return: dataframe containing count of disaster events of every type for every year from 2000 - 2021
+    """
     yearly_event_count = pd.DataFrame({
         'Year': range(2000, 2022)
     })
@@ -39,15 +48,21 @@ def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_
         disaster = natural_disasters_data[disaster_data_index]
         yearly_disaster_count = disaster.groupby(['Year']).size().reset_index(name=disaster_name)
         yearly_event_count = pd.merge(yearly_event_count, yearly_disaster_count, how='left').fillna(0)
-        yearly_event_count = yearly_event_count.astype({disaster_name: 'Int16'})
+        yearly_event_count = yearly_event_count.astype({disaster_name: 'Int16', 'Year': 'Int16'})
     yearly_event_count['Total'] = yearly_event_count['Hurricanes'] + yearly_event_count['Tornadoes'] + \
                                   yearly_event_count['Wildfires'] + yearly_event_count['Tsunamis'] + \
                                   yearly_event_count['Earthquakes'] + yearly_event_count['Volcanoes']
-    print(yearly_event_count)
+    # print(yearly_event_count)
     return yearly_event_count
 
 
 def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, event2: str):
+    """
+
+    :param event_counter:
+    :param event1:
+    :param event2:
+    """
     plt.bar(event_counter['Year'], event_counter[event1], color='r')
     plt.bar(event_counter['Year'], event_counter[event2], color='b', bottom=event_counter[event1])
     plt.legend([event1, event2])
@@ -73,10 +88,41 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_val: in
     print(statewise_event)
 
 
+def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculates change in percentage for GDP throughout the years considering
+    the year 2000 as the base. Change for every year is calculated by
+    measuring the difference in GDP for that year from the year 2000.
+
+    :param GDP_data: dataframe containing the GDP data throughout the years for United States
+    :return: dataframe containing year wise percentage change between 2000 and every other year until 2021
+    """
+    GDP_for_US = GDP_data.iloc[0]
+    base_GDP = GDP_for_US['2000']
+    percentage_change_in_GDP = {2000: 0}
+    for year in range(2001, 2021):
+        subsequent_GDP = GDP_for_US[str(year)]
+        change_in_GDP = subsequent_GDP - base_GDP
+        percentage_change = change_in_GDP * 100 / base_GDP
+        percentage_change = round(percentage_change, 2)
+        percentage_change_in_GDP[year] = percentage_change
+    percentage_change_in_GDP = pd.DataFrame.from_dict(percentage_change_in_GDP, orient='index',
+                                                      columns=['GDP_change_in_percentage'])
+    # print(percentage_change_in_GDP)
+    return percentage_change_in_GDP
+
 
 if __name__ == '__main__':
     natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
     natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data, volcanoes_data]
     yearly_event_summary = yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
+
     plot_yearwise_stacked_bar_graph(yearly_event_summary, 'Earthquakes', 'Tsunamis')
     yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,['Earthquakes', 'Tsunamis'])
+
+    percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
+    event_summary_with_GDP = pd.merge(yearly_event_summary, percentage_change_in_GDP, left_on='Year', right_index=True, how='left')
+    event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
+    # print(event_summary_with_GDP)
+    # plt.plot(event_summary_with_GDP)
+    # plt.show()
