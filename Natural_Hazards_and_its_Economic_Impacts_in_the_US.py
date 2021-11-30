@@ -25,7 +25,9 @@ References:
     1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
 
 """
+import pandas as pd
 from importing_data_files import *
+import matplotlib.pyplot as plt
 
 
 def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_data: list):
@@ -45,7 +47,36 @@ def yearly_event_count_summary(natural_disasters_order: list, natural_disasters_
     return yearly_event_count
 
 
+def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, event2: str):
+    plt.bar(event_counter['Year'], event_counter[event1], color='r')
+    plt.bar(event_counter['Year'], event_counter[event2], color='b', bottom=event_counter[event1])
+    plt.legend([event1, event2])
+    plt.xticks(rotation=45)
+    plt.show()
+
+
+def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_val: int, event_list: list):
+    dataset_length = len(event_dataset_list)
+    length_of_dataset = 0
+    while length_of_dataset < dataset_length:
+        if length_of_dataset == 0:
+            statewise_event = event_dataset_list[length_of_dataset][event_dataset_list[length_of_dataset]['Year'] ==
+                                            year_val].groupby(['State']).size().reset_index\
+                (name=event_list[length_of_dataset])
+            statewise_event = statewise_event.astype({event_list[length_of_dataset]: 'Int16'})
+        else:
+            statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
+                                        [length_of_dataset]['Year'] ==year_val].groupby(['State'])
+                                       .size().reset_index(name=event_list[length_of_dataset]), how='outer').fillna(0)
+            statewise_event = statewise_event.astype({event_list[length_of_dataset]: 'Int16'})
+        length_of_dataset += 1
+    print(statewise_event)
+
+
+
 if __name__ == '__main__':
     natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
     natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data, volcanoes_data]
     yearly_event_summary = yearly_event_count_summary(natural_disasters_order, natural_disasters_data)
+    plot_yearwise_stacked_bar_graph(yearly_event_summary, 'Earthquakes', 'Tsunamis')
+    yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,['Earthquakes', 'Tsunamis'])
