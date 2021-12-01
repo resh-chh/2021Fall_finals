@@ -9,8 +9,8 @@ dateparser = lambda x: pd.to_datetime(x, errors='coerce', format='%m/%d/%Y')
 storm_dtypes = {'EVENT_ID': 'Int64',
                 'DEATHS_DIRECT': 'Int16',
                 'INJURIES_DIRECT': 'Int16',
-                'DAMAGE_PROPERTY_NUM': 'Int64',
-                'DAMAGE_CROPS_NUM': 'Int64',
+                'DAMAGE_PROPERTY_NUM': 'float64',
+                'DAMAGE_CROPS_NUM': 'float64',
                 'EPISODE_ID': 'Int64',
                 'CZ_FIPS': 'Int16',
                 'INJURIES_INDIRECT': 'Int16',
@@ -27,17 +27,23 @@ hurricanes_data = pd.read_csv('data/hurricanes.csv', header=0,
                               date_parser=dateparser,
                               parse_dates=['BEGIN_DATE', 'END_DATE'])
 hurricanes_data['Year'] = pd.DatetimeIndex(hurricanes_data['BEGIN_DATE']).year
+# Calculating total damage caused in $Mil
+hurricanes_data['Total_Damage'] = (hurricanes_data['DAMAGE_PROPERTY_NUM'] + hurricanes_data['DAMAGE_CROPS_NUM']) / 10000000
 
 tornadoes_data = pd.read_csv('data/tornadoes.csv', header=0,
                              dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
 tornadoes_data['Year'] = pd.DatetimeIndex(tornadoes_data['BEGIN_DATE']).year
+# Calculating total damage caused in $Mil
+tornadoes_data['Total_Damage'] = (tornadoes_data['DAMAGE_PROPERTY_NUM'] + tornadoes_data['DAMAGE_CROPS_NUM']) / 10000000
 
 wildfires_data = pd.read_csv('data/wildfires.csv', header=0, dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
 wildfires_data['Year'] = pd.DatetimeIndex(wildfires_data['BEGIN_DATE']).year
+# Calculating total damage caused in $Mil
+wildfires_data['Total_Damage'] = (wildfires_data['DAMAGE_PROPERTY_NUM'] + wildfires_data['DAMAGE_CROPS_NUM']) / 10000000
 
 earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0,
                               usecols=['Year', 'Mo', 'Dy', 'Hr', 'Mn', 'Sec', 'Tsu', 'Location Name',
@@ -61,6 +67,7 @@ earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0,
                                      'Total Houses Destroyed': 'float16',
                                      'Total Houses Damaged': 'float16'
                                      })
+earthquake_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 
 tsunamis_data = pd.read_csv('data/tsunamis.tsv', sep='\t', header=0,
                             usecols=['Year', 'Mo', 'Dy', 'Hr', 'Mn', 'Sec', 'Earthquake Magnitude',
@@ -82,6 +89,7 @@ tsunamis_data = pd.read_csv('data/tsunamis.tsv', sep='\t', header=0,
                                    'Total Damage ($Mil)': 'float16',
                                    'Total Houses Destroyed': 'Int16'
                                    })
+tsunamis_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 
 volcanoes_data = pd.read_csv('data/volcanoes.tsv', sep='\t', header=0,
                              usecols=['Year', 'Mo', 'Dy', 'Tsu', 'Eq', 'Name', 'Location', 'State',
@@ -104,6 +112,8 @@ volcanoes_data = pd.read_csv('data/volcanoes.tsv', sep='\t', header=0,
                                     'Total Houses Destroyed': 'float16',
                                     }
                              )
+
+volcanoes_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 
 GDP_by_state_data = pd.read_csv('data/GDP_by_state.csv', header=0,
                                 dtype={'GeoName': str})
