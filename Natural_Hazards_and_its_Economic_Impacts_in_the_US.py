@@ -70,19 +70,35 @@ def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, ev
     plt.show()
 
 
-def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_val: int, disaster_list: list):
-    dataset_length = len(event_dataset_list)
-    length_of_dataset = 0
-    statewise_event = pd.DataFrame(columns=['State'])
-    while length_of_dataset < dataset_length:
-        statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
-                                        [length_of_dataset]['Year'] ==year_val].groupby(['State'])
-                                       .size().reset_index(name=event_list[length_of_dataset]), how='outer').fillna(0)
-        statewise_event = statewise_event.astype({disaster_list[length_of_dataset]: 'Int16'})
-        length_of_dataset += 1
-    print(statewise_event)
-    return statewise_event
+def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: list, disaster_list: list):
+    """
 
+    :param event_dataset_list:
+    :param year_list:
+    :param disaster_list:
+    :return:
+    """
+    yearly_statewise_event = pd.DataFrame(columns=['State', 'Earthquakes', 'Tsunamis', 'Year'])
+
+    for year in year_list:
+        dataset_length = len(event_dataset_list)
+        length_of_dataset = 0
+        statewise_event = pd.DataFrame(columns=['State'])
+        while length_of_dataset < dataset_length:
+            statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
+                                            [length_of_dataset]['Year'] == year].groupby(['State'])
+                                           .size().reset_index(name=event_list[length_of_dataset]), how='outer').fillna(0)
+            statewise_event = statewise_event.astype({disaster_list[length_of_dataset]: 'Int16'})
+            length_of_dataset += 1
+        for index, row in statewise_event.iterrows():
+            if row[disaster_list[0]] == 0 or row[disaster_list[1]] == 0:
+                statewise_event = statewise_event.drop(index=index)
+        statewise_event['Year'] = year
+
+        yearly_statewise_event = pd.concat([statewise_event, yearly_statewise_event]).sort_values('Year')
+
+    print(yearly_statewise_event)
+    return yearly_statewise_event
 
 def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     """
@@ -109,6 +125,12 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
 
 
 def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame):
+    """
+
+    :param disaster_list:
+    :param event_counter:
+    :return:
+    """
     year_list = []
     for year in event_counter['Year']:
         year_val = event_counter.loc[event_counter['Year'] == year]
@@ -132,8 +154,8 @@ if __name__ == '__main__':
     event_list = ['Earthquakes', 'Tsunamis']
     disaster_years = find_combined_disaster_year(event_list, yearly_event_summary)
     # find the states in which the disasters occurred according to the years
-    yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,
-                                                                             ['Earthquakes', 'Tsunamis'])
+    state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
+                                                                 ['Earthquakes', 'Tsunamis'])
 
     percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
     event_summary_with_GDP = pd.merge(yearly_event_summary, percentage_change_in_GDP, left_on='Year', right_index=True,
