@@ -113,7 +113,7 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: l
 
         yearly_statewise_event = pd.concat([statewise_event, yearly_statewise_event]).sort_values('Year')
 
-    print(yearly_statewise_event)
+    # print(yearly_statewise_event)
     return yearly_statewise_event
 
 def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
@@ -187,10 +187,11 @@ if __name__ == '__main__':
     plot_yearwise_stacked_bar_graph(yearly_event_summary, 'Earthquakes', 'Tsunamis')
     # find the list of years in which earthquakes and tsunamis occurred at the same time
     event_list = ['Earthquakes', 'Tsunamis']
-    disaster_years = find_combined_disaster_year(event_list, yearly_event_summary)
+    disaster_years = find_combined_disaster_year(event_list, yearly_event_count_summary)
     # find the states in which the disasters occurred according to the years
-    yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], 2018,
-                                                                             ['Earthquakes', 'Tsunamis'])
+    yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data],
+                                                                            disaster_years, ['Earthquakes', 'Tsunamis'])
+    # print(yearwise_statewise_event_summary)
     # Rashmi
     state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
                                                                  ['Earthquakes', 'Tsunamis'])
