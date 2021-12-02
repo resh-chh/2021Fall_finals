@@ -41,10 +41,10 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     :return: dataframe containing count of disaster events of every type for every year from 2000 - 2021
     """
     yearly_event_count = pd.DataFrame({
-        'Year': range(2000, 2022)
+        'Year': range(2000, 2021)
     })
     yearly_damage_summary = pd.DataFrame({
-        'Year': range(2000, 2022)
+        'Year': range(2000, 2021)
     })
     for disaster_name in natural_disasters_order:
         disaster_data_index = natural_disasters_order.index(disaster_name)
@@ -72,15 +72,15 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     return yearly_damage_summary, yearly_event_count
 
 
-def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, event2: str):
+def plot_yearwise_stacked_bar_graph(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, event1: str, event2: str):
     """
 
     :param event_counter:
     :param event1:
     :param event2:
     """
-    plt.bar(event_counter['Year'], event_counter[event1], color='r')
-    plt.bar(event_counter['Year'], event_counter[event2], color='b', bottom=event_counter[event1])
+    plt.bar(dataframe1['Year'], dataframe1[event1], color='r')
+    plt.bar(dataframe2['Year'], dataframe2[event2], color='b', bottom=dataframe1[event1])
     plt.legend([event1, event2])
     plt.xticks(rotation=45)
     plt.show()
@@ -110,16 +110,32 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     :return: dataframe containing year wise percentage change between 2000 and every other year until 2021
     """
     GDP_for_US = GDP_data.iloc[0]
-    base_GDP = GDP_for_US['2000']
+    base_GDP_for_2000 = GDP_for_US['2000']
+    base_GDP = base_GDP_for_2000
+    total_GDP = {2000: base_GDP}
+    percentage_change_in_GDP_from_2000 = {2000: 0}
     percentage_change_in_GDP = {2000: 0}
     for year in range(2001, 2021):
         subsequent_GDP = GDP_for_US[str(year)]
+        change_in_GDP_from_2000 = subsequent_GDP - base_GDP_for_2000
         change_in_GDP = subsequent_GDP - base_GDP
+        percentage_change_from_2000 = change_in_GDP_from_2000 * 100 / base_GDP_for_2000
         percentage_change = change_in_GDP * 100 / base_GDP
+        percentage_change_from_2000 = round(percentage_change_from_2000, 2)
         percentage_change = round(percentage_change, 2)
+        total_GDP[year] = subsequent_GDP
+        percentage_change_in_GDP_from_2000[year] = percentage_change_from_2000
         percentage_change_in_GDP[year] = percentage_change
+        base_GDP = subsequent_GDP
+    total_GDP = pd.DataFrame.from_dict(total_GDP, orient='index', columns=['GDP_for_US'])
+    percentage_change_in_GDP_from_2000 = pd.DataFrame.from_dict(percentage_change_in_GDP_from_2000, orient='index',
+                                                      columns=['GDP_change_in_percentage_from_2000'])
+    percentage_change_in_GDP_from_2000 = pd.merge(total_GDP, percentage_change_in_GDP_from_2000, left_index=True, right_index=True, how='outer')
     percentage_change_in_GDP = pd.DataFrame.from_dict(percentage_change_in_GDP, orient='index',
                                                       columns=['GDP_change_in_percentage'])
+    percentage_change_in_GDP = pd.merge(percentage_change_in_GDP_from_2000, percentage_change_in_GDP, left_index=True, right_index=True, how='outer')
+    percentage_change_in_GDP.index.name = 'Year'
+    percentage_change_in_GDP.reset_index(inplace=True)
     # print(percentage_change_in_GDP)
     return percentage_change_in_GDP
 
@@ -155,16 +171,19 @@ if __name__ == '__main__':
                                                                              ['Earthquakes', 'Tsunamis'])
     # Rashmi
     percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
-    event_summary_with_GDP = pd.merge(yearly_event_count_summary, percentage_change_in_GDP,
-                                      left_on='Year', right_index=True, how='left')
-    event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
-    # # print(event_summary_with_GDP)
-    damage_with_GDP = pd.merge(yearly_damage_summary, percentage_change_in_GDP,
-                               left_on='Year', right_index=True, how='left')
-    damage_with_GDP = damage_with_GDP[['Damage_Percentage', 'GDP_change_in_percentage']]
-    # print(damage_with_GDP)
-    # plt.plot(damage_with_GDP)
-    # plt.show()
+    # event_summary_with_GDP = pd.merge(yearly_event_count_summary, percentage_change_in_GDP,
+    #                                   left_on='Year', right_index=True, how='left')
+    # event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
+    # # # print(event_summary_with_GDP)
+    # damage_with_GDP = pd.merge(yearly_damage_summary, percentage_change_in_GDP,
+    #                            left_on='Year', right_index=True, how='left')
+    # damage_with_GDP = damage_with_GDP[['Damage_Percentage', 'GDP_change_in_percentage']]
+    # # print(damage_with_GDP)
+    # # plt.plot(damage_with_GDP)
+    # # plt.show()
     # # plt.plot(event_summary_with_GDP)
     # # plt.show()
     # print(volcanoes_data['DAMAGE_PROPERTY_NUM'])
+    # print(yearly_damage_summary)
+    # print(percentage_change_in_GDP)
+    # plot_yearwise_stacked_bar_graph(yearly_damage_summary, percentage_change_in_GDP, 'Total_Damage', 'GDP_for_US')
