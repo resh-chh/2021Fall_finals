@@ -32,7 +32,7 @@ References:
 import pandas as pd
 from importing_data_files import *
 import matplotlib.pyplot as plt
-
+from IPython.display import display
 
 def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: list) -> (pd.DataFrame, pd.DataFrame):
     """
@@ -85,6 +85,10 @@ def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, ev
     :param event2: 2nd natural disaster to be plotted
     :return: None
     """
+    plt.figure(figsize=(15, 8))
+    plt.xlabel("Year")
+    plt.ylabel("Number of Disasters")
+    plt.title("Number of Natural Disasters per year")
     plt.bar(event_counter['Year'], event_counter[event1], color='r')
     plt.bar(event_counter['Year'], event_counter[event2], color='b', bottom=event_counter[event1])
     plt.legend([event1, event2])
@@ -114,7 +118,7 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: l
         while length_of_dataset < dataset_length:
             statewise_event = pd.merge(statewise_event, event_dataset_list[length_of_dataset][event_dataset_list
                                             [length_of_dataset]['Year'] == year].groupby(['State'])
-                                           .size().reset_index(name=event_list[length_of_dataset]), how='outer').fillna(0)
+                                           .size().reset_index(name=disaster_list[length_of_dataset]), how='outer').fillna(0)
             statewise_event = statewise_event.astype({disaster_list[length_of_dataset]: 'Int16'})
             length_of_dataset += 1
         for index, row in statewise_event.iterrows():
@@ -215,13 +219,11 @@ if __name__ == '__main__':
     event_list = ['Earthquakes', 'Tsunamis']
     disaster_years = find_combined_disaster_year(event_list, yearly_event_count_summary)
     # find the states in which the disasters occurred according to the years
-    yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data],
-                                                                            disaster_years, ['Earthquakes', 'Tsunamis'])
-    print(yearwise_statewise_event_summary)
 
-    # print(yearwise_statewise_event_summary)
     state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
-                                                                 ['Earthquakes', 'Tsunamis'])
+                                                                event_list)
+    display(state_wise_disasters)
+
     # find_date_wise_disasters(state_wise_disasters, earthquake_data, tsunamis_data)
 
     # Rashmi
