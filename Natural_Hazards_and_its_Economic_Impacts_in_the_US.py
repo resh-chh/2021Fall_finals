@@ -72,27 +72,36 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     return yearly_damage_summary, yearly_event_count
 
 
-def plot_yearwise_stacked_bar_graph(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, event1: str, event2: str):
+def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, event2: str):
     """
+    Plot the years when the two natural disaster occurred against the number of natural disasters
+    every year.
 
-    :param event_counter:
-    :param event1:
-    :param event2:
+    :param event_counter:Dataframe containing the data regarding the number of natural disasters
+            which occured every year
+    :param event1: 1st natural disaster to be plotted
+    :param event2: 2nd natural disaster to be plotted
+    :return: None
     """
-    plt.bar(dataframe1['Year'], dataframe1[event1], color='r')
-    plt.bar(dataframe2['Year'], dataframe2[event2], color='b', bottom=dataframe1[event1])
+    plt.bar(event_counter['Year'], event_counter[event1], color='r')
+    plt.bar(event_counter['Year'], event_counter[event2], color='b', bottom=event_counter[event1])
     plt.legend([event1, event2])
     plt.xticks(rotation=45)
     plt.show()
 
 
-def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: list, disaster_list: list):
+def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: list,
+                                          disaster_list: list) -> pd.DataFrame:
     """
+    Find if the two natural disasters occur in the same state in the US for the all years when they
+    occurred together. If yes, then create a dataframe of all the states and the number of natural
+    disaster occurrences in that state for each year.
 
-    :param event_dataset_list:
-    :param year_list:
-    :param disaster_list:
-    :return:
+    :param event_dataset_list: list of dataframes of the two natural disasters in question
+    :param year_list: List of all the years when the two natural disasters occurred together
+    :param disaster_list: list of the two natural disasters in question
+    :return: dataframe containing the states,years and the number of times the two natural disasters
+             occurred in same state in the same year.
     """
     yearly_statewise_event = pd.DataFrame(columns=['State', 'Earthquakes', 'Tsunamis', 'Year'])
 
@@ -115,6 +124,7 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: l
 
     # print(yearly_statewise_event)
     return yearly_statewise_event
+
 
 def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     """
@@ -156,12 +166,14 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     return percentage_change_in_GDP
 
 
-def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame):
+def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame) -> list:
     """
+    Find the list of years in which the two natural disasters occurred together
 
-    :param disaster_list:
-    :param event_counter:
-    :return:
+    :param disaster_list: list of the natural disasters in question
+    :param event_counter: dataframe containing the number of times the natural disasters have
+                     occurred in each year
+    :return:list of years in which the two natural disasters have occurred together
     """
     year_list = []
     for year in event_counter['Year']:
@@ -174,6 +186,9 @@ def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame
     return year_list
 
 
+# def find_date_wise_disasters(disasters_by_state:pd.DataFrame, disaster1: pd.DataFrame, disaster2: pd.DataFrame):
+
+
 if __name__ == '__main__':
     # Rashmi
     natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
@@ -184,17 +199,20 @@ if __name__ == '__main__':
     # print(yearly_event_count_summary)
     # Anushri
     # plot the graph to show the occurrence of earthquakes and tsunamis each year from 2000-2021
-    plot_yearwise_stacked_bar_graph(yearly_event_summary, 'Earthquakes', 'Tsunamis')
+    plot_yearwise_stacked_bar_graph(yearly_event_count_summary, 'Earthquakes', 'Tsunamis')
     # find the list of years in which earthquakes and tsunamis occurred at the same time
     event_list = ['Earthquakes', 'Tsunamis']
     disaster_years = find_combined_disaster_year(event_list, yearly_event_count_summary)
     # find the states in which the disasters occurred according to the years
     yearwise_statewise_event_summary = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data],
                                                                             disaster_years, ['Earthquakes', 'Tsunamis'])
+    print(yearwise_statewise_event_summary)
+
     # print(yearwise_statewise_event_summary)
     # Rashmi
     state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
                                                                  ['Earthquakes', 'Tsunamis'])
+    # find_date_wise_disasters(state_wise_disasters, earthquake_data, tsunamis_data)
 
     percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
     # event_summary_with_GDP = pd.merge(yearly_event_count_summary, percentage_change_in_GDP,
