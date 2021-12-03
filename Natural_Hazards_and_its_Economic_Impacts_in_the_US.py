@@ -109,7 +109,7 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: l
     :return: dataframe containing the states,years and the number of times the two natural disasters
              occurred in same state in the same year.
     """
-    yearly_statewise_event = pd.DataFrame(columns=['State', 'Earthquakes', 'Tsunamis', 'Year'])
+    yearly_statewise_event = pd.DataFrame(columns=['State', disaster_list[0], disaster_list[1], 'Year'])
 
     for year in year_list:
         dataset_length = len(event_dataset_list)
