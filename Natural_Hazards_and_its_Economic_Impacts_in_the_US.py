@@ -18,10 +18,10 @@ Datasets:
     2.	World Development Indicators - https://databank.worldbank.org/source/world-development-indicators
 
 Hypotheses:
-    Hypothesis I: Natural Disasters are directly correlated with the economy
-    and affect the country’s GDP - PPP (gross domestic product based on purchasing power parity)
-    Hypothesis II: One natural disaster can lead to another, for instance,
-    Hurricanes can set off more destructive Earthquakes.
+    Hypothesis I: One natural disaster can be the cause for another natural disaster
+    which occurs simultaneously.
+    Hypothesis II: Natural Disasters are directly correlated with the economy
+    and affect the country’s GDP (gross domestic product).
 
 References:
     1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
