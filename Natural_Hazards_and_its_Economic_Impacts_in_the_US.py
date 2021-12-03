@@ -25,6 +25,8 @@ Hypotheses:
 
 References:
     1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
+    2. Economic Impacts of Natural Disasters: https://www.journals.uchicago.edu/doi/10.1093/reep/rez004
+    ** Other examples shown in class from Github may also have been referred
 
 """
 import pandas as pd
@@ -49,7 +51,7 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     for disaster_name in natural_disasters_order:
         disaster_data_index = natural_disasters_order.index(disaster_name)
         disaster = natural_disasters_data[disaster_data_index]
-
+        disaster = disaster[disaster['Year'] < 2021]
         yearly_disaster_count = disaster.groupby(['Year']).size().reset_index(name=disaster_name)
         yearly_disaster_damage = disaster.groupby(['Year']).sum().fillna(0)
 
@@ -189,6 +191,15 @@ def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame
 # def find_date_wise_disasters(disasters_by_state:pd.DataFrame, disaster1: pd.DataFrame, disaster2: pd.DataFrame):
 
 
+def retrieve_information_required_by_state(natural_disasters_order: list, natural_disasters_data: list, state_codes: pd.DataFrame, start_year: int, end_year: int):
+    information_retrieved = state_codes[['State', 'Code']]
+    for disaster_name in natural_disasters_order:
+        disaster_data_index = natural_disasters_order.index(disaster_name)
+        disaster = natural_disasters_data[disaster_data_index]
+        disaster = disaster[start_year <= disaster['Year'] <= end_year]
+        disaster_information = disaster.groupby(['State']).sum().reset_index(name=disaster_name)
+
+
 if __name__ == '__main__':
     # Rashmi
     natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
@@ -209,25 +220,35 @@ if __name__ == '__main__':
     print(yearwise_statewise_event_summary)
 
     # print(yearwise_statewise_event_summary)
-    # Rashmi
     state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
                                                                  ['Earthquakes', 'Tsunamis'])
     # find_date_wise_disasters(state_wise_disasters, earthquake_data, tsunamis_data)
 
+    # Rashmi
     percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
     # event_summary_with_GDP = pd.merge(yearly_event_count_summary, percentage_change_in_GDP,
     #                                   left_on='Year', right_index=True, how='left')
     # event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
     # # # print(event_summary_with_GDP)
     # damage_with_GDP = pd.merge(yearly_damage_summary, percentage_change_in_GDP,
-    #                            left_on='Year', right_index=True, how='left')
-    # damage_with_GDP = damage_with_GDP[['Damage_Percentage', 'GDP_change_in_percentage']]
-    # # print(damage_with_GDP)
-    # # plt.plot(damage_with_GDP)
-    # # plt.show()
+    #                            left_on='Year', right_on='Year', how='outer')
+    # damage_with_GDP = damage_with_GDP[['Year', 'GDP_for_US', 'Total_Damage']]
+    # # damage_with_GDP = damage_with_GDP[['Damage_Percentage', 'GDP_change_in_percentage']]
+    # damage_with_GDP = damage_with_GDP.set_index('Year')
+    # plt.plot(damage_with_GDP['GDP_for_US'])
+    # plt.show()
+    # plt.plot(damage_with_GDP['Total_Damage'])
+    # plt.show()
     # # plt.plot(event_summary_with_GDP)
     # # plt.show()
     # print(volcanoes_data['DAMAGE_PROPERTY_NUM'])
-    # print(yearly_damage_summary)
+    # print(yearly_damage_summary['Total_Damage'])
     # print(percentage_change_in_GDP)
-    # plot_yearwise_stacked_bar_graph(yearly_damage_summary, percentage_change_in_GDP, 'Total_Damage', 'GDP_for_US')
+    # plot_yearwise_stacked_bar_graph(percentage_change_in_GDP, yearly_damage_summary, 'GDP_for_US', 'Total_Damage')
+    # yearly_damage_summary.set_index('Year', inplace=True)
+    # plt.plot(yearly_damage_summary['Total_Damage'])
+    # plt.xticks(range(2000, 2021, 2))
+    # plt.show()
+    # percentage_change_in_GDP.set_index('Year', inplace=True)
+    # plt.plot(percentage_change_in_GDP['GDP_change_in_percentage'])
+    # plt.show()

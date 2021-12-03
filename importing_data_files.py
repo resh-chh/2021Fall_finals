@@ -26,6 +26,7 @@ hurricanes_data = pd.read_csv('data/hurricanes.csv', header=0,
                               dtype=storm_dtypes,
                               date_parser=dateparser,
                               parse_dates=['BEGIN_DATE', 'END_DATE'])
+# Extracting the year for the event
 hurricanes_data['Year'] = pd.DatetimeIndex(hurricanes_data['BEGIN_DATE']).year
 # Calculating total damage caused in $Mil
 hurricanes_data['Total_Damage'] = (hurricanes_data['DAMAGE_PROPERTY_NUM'] + hurricanes_data['DAMAGE_CROPS_NUM']) / 10000000
@@ -34,6 +35,7 @@ tornadoes_data = pd.read_csv('data/tornadoes.csv', header=0,
                              dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
+# Extracting the year for the event
 tornadoes_data['Year'] = pd.DatetimeIndex(tornadoes_data['BEGIN_DATE']).year
 # Calculating total damage caused in $Mil
 tornadoes_data['Total_Damage'] = (tornadoes_data['DAMAGE_PROPERTY_NUM'] + tornadoes_data['DAMAGE_CROPS_NUM']) / 10000000
@@ -41,6 +43,7 @@ tornadoes_data['Total_Damage'] = (tornadoes_data['DAMAGE_PROPERTY_NUM'] + tornad
 wildfires_data = pd.read_csv('data/wildfires.csv', header=0, dtype=storm_dtypes,
                              date_parser=dateparser,
                              parse_dates=['BEGIN_DATE', 'END_DATE'])
+# Extracting the year for the event
 wildfires_data['Year'] = pd.DatetimeIndex(wildfires_data['BEGIN_DATE']).year
 # Calculating total damage caused in $Mil
 wildfires_data['Total_Damage'] = (wildfires_data['DAMAGE_PROPERTY_NUM'] + wildfires_data['DAMAGE_CROPS_NUM']) / 10000000
