@@ -124,3 +124,4 @@ GDP_by_state_data = pd.read_csv('data/GDP_by_state.csv', header=0,
 state_codes = pd.read_csv('data/state_codes.csv', header=0,
                           dtype={'State': str,
                                  'Code': str})
+state_codes.rename(columns={'State': 'State_Name', 'Code': 'State'}, inplace=True)
