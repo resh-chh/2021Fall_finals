@@ -33,6 +33,7 @@ import pandas as pd
 from importing_data_files import *
 import matplotlib.pyplot as plt
 from IPython.display import display
+import numpy as np
 
 def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: list) -> (pd.DataFrame, pd.DataFrame):
     """
@@ -70,7 +71,6 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     # Calculating yearly percentage of damage caused from total damage done throughout the years
     total_damage = yearly_damage_summary[['Total_Damage']].sum()
     yearly_damage_summary['Damage_Percentage'] = yearly_damage_summary['Total_Damage'] * 100 / total_damage['Total_Damage']
-    # print(yearly_damage_summary)
     return yearly_damage_summary, yearly_event_count
 
 
@@ -168,7 +168,6 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
     percentage_change_in_GDP = pd.merge(percentage_change_in_GDP_from_2000, percentage_change_in_GDP, left_index=True, right_index=True, how='outer')
     percentage_change_in_GDP.index.name = 'Year'
     percentage_change_in_GDP.reset_index(inplace=True)
-    # print(percentage_change_in_GDP)
     return percentage_change_in_GDP
 
 
@@ -192,65 +191,32 @@ def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame
     return year_list
 
 
-# def find_date_wise_disasters(disasters_by_state:pd.DataFrame, disaster1: pd.DataFrame, disaster2: pd.DataFrame):
+def retrieve_information_required_by_state(natural_disasters_order: list, natural_disasters_data: list, state_codes: pd.DataFrame, start_year: int, end_year: int, information_col: str) -> pd.DataFrame:
+    """
+    Dynamic Function to retrieve data grouped by states in the United States in a span of defined years.
 
-
-def retrieve_information_required_by_state(natural_disasters_order: list, natural_disasters_data: list, state_codes: pd.DataFrame, start_year: int, end_year: int):
-    information_retrieved = state_codes[['State', 'Code']]
+    :param natural_disasters_order: list of disaster event types
+    :param natural_disasters_data: list of data sets for each disaster event in order
+    :param state_codes: dataframe containing State names and their codes
+    :param start_year: year from where the information is required
+    :param end_year: end year till where the information is required
+    :param information_col: column that is required to be grouped by states
+    :return: dataframe containing information column required from every Natural disaster grouped by State
+    """
+    information_retrieved = state_codes[['State', 'State_Name']]
     for disaster_name in natural_disasters_order:
         disaster_data_index = natural_disasters_order.index(disaster_name)
         disaster = natural_disasters_data[disaster_data_index]
-        disaster = disaster[start_year <= disaster['Year'] <= end_year]
-        disaster_information = disaster.groupby(['State']).sum().reset_index(name=disaster_name)
+        disaster = disaster[disaster['Year'] <= end_year]
+        disaster = disaster[start_year <= disaster['Year']]
+        disaster_information = disaster.groupby(['State']).sum().replace(np.nan,  0)
+        disaster_information = disaster_information[[information_col]].rename(columns={information_col: disaster_name}).reset_index()
+        information_retrieved = pd.merge(information_retrieved, disaster_information, left_on='State', right_on='State', how='left')
+    information_retrieved = information_retrieved.replace(np.nan, 0)
+    information_retrieved['Total'] = information_retrieved['Hurricanes'] + information_retrieved['Tornadoes'] + \
+                                     information_retrieved['Wildfires'] + information_retrieved['Tsunamis'] + \
+                                     information_retrieved['Earthquakes'] + information_retrieved['Volcanoes']
+    return information_retrieved
 
 
-if __name__ == '__main__':
-    # Rashmi
-    natural_disasters_order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
-    natural_disasters_data = [hurricanes_data, tornadoes_data, wildfires_data, tsunamis_data, earthquake_data,
-                              volcanoes_data]
-    yearly_damage_summary, yearly_event_count_summary = yearly_event_summary(natural_disasters_order, natural_disasters_data)
-    # print(yearly_damage_summary)
-    # print(yearly_event_count_summary)
-    # Anushri
-    # plot the graph to show the occurrence of earthquakes and tsunamis each year from 2000-2021
-    plot_yearwise_stacked_bar_graph(yearly_event_count_summary, 'Earthquakes', 'Tsunamis')
-    # find the list of years in which earthquakes and tsunamis occurred at the same time
-    event_list = ['Earthquakes', 'Tsunamis']
-    disaster_years = find_combined_disaster_year(event_list, yearly_event_count_summary)
-    # find the states in which the disasters occurred according to the years
-
-    state_wise_disasters = yearwise_statewise_event_summary_plot([earthquake_data, tsunamis_data], disaster_years,
-                                                                event_list)
-    display(state_wise_disasters)
-
-    # find_date_wise_disasters(state_wise_disasters, earthquake_data, tsunamis_data)
-
-    # Rashmi
-    percentage_change_in_GDP = calculate_percentage_change_in_GDP(GDP_by_state_data)
-    # event_summary_with_GDP = pd.merge(yearly_event_count_summary, percentage_change_in_GDP,
-    #                                   left_on='Year', right_index=True, how='left')
-    # event_summary_with_GDP = event_summary_with_GDP.set_index('Year')
-    # # # print(event_summary_with_GDP)
-    # damage_with_GDP = pd.merge(yearly_damage_summary, percentage_change_in_GDP,
-    #                            left_on='Year', right_on='Year', how='outer')
-    # damage_with_GDP = damage_with_GDP[['Year', 'GDP_for_US', 'Total_Damage']]
-    # # damage_with_GDP = damage_with_GDP[['Damage_Percentage', 'GDP_change_in_percentage']]
-    # damage_with_GDP = damage_with_GDP.set_index('Year')
-    # plt.plot(damage_with_GDP['GDP_for_US'])
-    # plt.show()
-    # plt.plot(damage_with_GDP['Total_Damage'])
-    # plt.show()
-    # # plt.plot(event_summary_with_GDP)
-    # # plt.show()
-    # print(volcanoes_data['DAMAGE_PROPERTY_NUM'])
-    # print(yearly_damage_summary['Total_Damage'])
-    # print(percentage_change_in_GDP)
-    # plot_yearwise_stacked_bar_graph(percentage_change_in_GDP, yearly_damage_summary, 'GDP_for_US', 'Total_Damage')
-    # yearly_damage_summary.set_index('Year', inplace=True)
-    # plt.plot(yearly_damage_summary['Total_Damage'])
-    # plt.xticks(range(2000, 2021, 2))
-    # plt.show()
-    # percentage_change_in_GDP.set_index('Year', inplace=True)
-    # plt.plot(percentage_change_in_GDP['GDP_change_in_percentage'])
-    # plt.show()
+# def find_date_wise_disasters(disasters_by_state:pd.DataFrame, disaster1: pd.DataFrame, disaster2: pd.DataFrame):
