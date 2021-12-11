@@ -3,25 +3,9 @@ r"""
 
 Topic: Natural Hazards and its Economic Impacts in the United States
 
-Instructor: John Weible, jweible@illinois.edu
-
-Collaborators:
-    1. Rashmi Chhabria, rashmic2@illinois.edu
-    2. Anushri Bhagwath, anushri5@illinois.edu
-
 Description:
     This project focuses on assessing the interrelation between Natural Disasters
     and their impact on the Economy specifically in the United States of America.
-
-Datasets:
-    1.	Natural Hazards - https://www.ngdc.noaa.gov/hazard/hazards.shtml
-    2.	World Development Indicators - https://databank.worldbank.org/source/world-development-indicators
-
-Hypotheses:
-    Hypothesis I: One natural disaster can be the cause for another natural disaster
-    which occurs simultaneously.
-    Hypothesis II: Natural Disasters are directly correlated with the economy
-    and affect the country’s GDP (gross domestic product).
 
 References:
     1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb
@@ -42,6 +26,58 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
     :param natural_disasters_order: list of disaster event types
     :param natural_disasters_data: list of data sets for each disaster event in order
     :return: dataframe containing count of disaster events of every type for every year from 2000 - 2021
+    >>> order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
+    >>> hurricane = {'Year': [2000, 2001, 2002], 'Total_Damage': [500000, 1100642, 1102750]}
+    >>> hurricane = pd.DataFrame.from_dict(hurricane)
+    >>> data = [hurricane, hurricane, hurricane, hurricane, hurricane, hurricane]
+    >>> yearly_event_summary(order, data)
+    (    Year  Hurricanes  Tornadoes  ...  Volcanoes  Total_Damage  Damage_Percentage
+    0   2000    500000.0   500000.0  ...   500000.0     3000000.0          18.495283
+    1   2001   1100642.0  1100642.0  ...  1100642.0     6603852.0          40.713370
+    2   2002   1102750.0  1102750.0  ...  1102750.0     6616500.0          40.791347
+    3   2003         0.0        0.0  ...        0.0           0.0           0.000000
+    4   2004         0.0        0.0  ...        0.0           0.0           0.000000
+    5   2005         0.0        0.0  ...        0.0           0.0           0.000000
+    6   2006         0.0        0.0  ...        0.0           0.0           0.000000
+    7   2007         0.0        0.0  ...        0.0           0.0           0.000000
+    8   2008         0.0        0.0  ...        0.0           0.0           0.000000
+    9   2009         0.0        0.0  ...        0.0           0.0           0.000000
+    10  2010         0.0        0.0  ...        0.0           0.0           0.000000
+    11  2011         0.0        0.0  ...        0.0           0.0           0.000000
+    12  2012         0.0        0.0  ...        0.0           0.0           0.000000
+    13  2013         0.0        0.0  ...        0.0           0.0           0.000000
+    14  2014         0.0        0.0  ...        0.0           0.0           0.000000
+    15  2015         0.0        0.0  ...        0.0           0.0           0.000000
+    16  2016         0.0        0.0  ...        0.0           0.0           0.000000
+    17  2017         0.0        0.0  ...        0.0           0.0           0.000000
+    18  2018         0.0        0.0  ...        0.0           0.0           0.000000
+    19  2019         0.0        0.0  ...        0.0           0.0           0.000000
+    20  2020         0.0        0.0  ...        0.0           0.0           0.000000
+    <BLANKLINE>
+    [21 rows x 9 columns],     Year  Hurricanes  Tornadoes  ...  Earthquakes  Volcanoes  Total_Count
+    0   2000           1          1  ...            1          1            6
+    1   2001           1          1  ...            1          1            6
+    2   2002           1          1  ...            1          1            6
+    3   2003           0          0  ...            0          0            0
+    4   2004           0          0  ...            0          0            0
+    5   2005           0          0  ...            0          0            0
+    6   2006           0          0  ...            0          0            0
+    7   2007           0          0  ...            0          0            0
+    8   2008           0          0  ...            0          0            0
+    9   2009           0          0  ...            0          0            0
+    10  2010           0          0  ...            0          0            0
+    11  2011           0          0  ...            0          0            0
+    12  2012           0          0  ...            0          0            0
+    13  2013           0          0  ...            0          0            0
+    14  2014           0          0  ...            0          0            0
+    15  2015           0          0  ...            0          0            0
+    16  2016           0          0  ...            0          0            0
+    17  2017           0          0  ...            0          0            0
+    18  2018           0          0  ...            0          0            0
+    19  2019           0          0  ...            0          0            0
+    20  2020           0          0  ...            0          0            0
+    <BLANKLINE>
+    [21 rows x 8 columns])
     """
     yearly_event_count = pd.DataFrame({
         'Year': range(2000, 2021)
@@ -58,7 +94,7 @@ def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: 
 
         yearly_disaster_damage = yearly_disaster_damage[['Total_Damage']].rename(columns={'Total_Damage': disaster_name}).reset_index()
 
-        yearly_damage_summary = pd.merge(yearly_damage_summary, yearly_disaster_damage, left_on = 'Year', right_on='Year', how='left').fillna(0)
+        yearly_damage_summary = pd.merge(yearly_damage_summary, yearly_disaster_damage, left_on='Year', right_on='Year', how='left').fillna(0)
         yearly_event_count = pd.merge(yearly_event_count, yearly_disaster_count, how='left').fillna(0)
         yearly_event_count = yearly_event_count.astype({disaster_name: 'Int16', 'Year': 'Int16'})
 
@@ -83,7 +119,6 @@ def plot_yearwise_stacked_bar_graph(event_counter: pd.DataFrame, event1: str, ev
             which occured every year
     :param event1: 1st natural disaster to be plotted
     :param event2: 2nd natural disaster to be plotted
-    :return: None
     """
     plt.figure(figsize=(15, 8))
     plt.xlabel("Year")
@@ -140,6 +175,34 @@ def calculate_percentage_change_in_GDP(GDP_data: pd.DataFrame) -> pd.DataFrame:
 
     :param GDP_data: dataframe containing the GDP data throughout the years for United States
     :return: dataframe containing year wise percentage change between 2000 and every other year until 2021
+    >>> US_GDP = {'2000': [10250952], '2001': [10581929], '2002': [10929108], '2003': [11456450], '2004': [12217196],'2005': [13039197], '2006': [13815583], '2007': [14474228], '2008': [14769862], '2009': [14478067], '2010': [15048970], '2011': [15599731], '2012': [16253970], '2013': [16843196], '2014': [17550687], '2015': [18206023], '2016': [18695106], '2017': [19479623], '2018': [20527159], '2019': [21372582], '2020': [20893746]}
+    >>> US_GDP = pd.DataFrame.from_dict(US_GDP)
+    >>> calculate_percentage_change_in_GDP(US_GDP)
+        Year  ...  GDP_change_in_percentage
+    0   2000  ...                      0.00
+    1   2001  ...                      3.23
+    2   2002  ...                      3.28
+    3   2003  ...                      4.83
+    4   2004  ...                      6.64
+    5   2005  ...                      6.73
+    6   2006  ...                      5.95
+    7   2007  ...                      4.77
+    8   2008  ...                      2.04
+    9   2009  ...                     -1.98
+    10  2010  ...                      3.94
+    11  2011  ...                      3.66
+    12  2012  ...                      4.19
+    13  2013  ...                      3.63
+    14  2014  ...                      4.20
+    15  2015  ...                      3.73
+    16  2016  ...                      2.69
+    17  2017  ...                      4.20
+    18  2018  ...                      5.38
+    19  2019  ...                      4.12
+    20  2020  ...                     -2.24
+    <BLANKLINE>
+    [21 rows x 4 columns]
+
     """
     GDP_for_US = GDP_data.iloc[0]
     base_GDP_for_2000 = GDP_for_US['2000']
@@ -197,11 +260,25 @@ def retrieve_information_required_by_state(natural_disasters_order: list, natura
 
     :param natural_disasters_order: list of disaster event types
     :param natural_disasters_data: list of data sets for each disaster event in order
-    :param state_codes: dataframe containing State names and their codes
+    :param state_codes: dataframe containing dataset with State names and their codes
     :param start_year: year from where the information is required
     :param end_year: end year till where the information is required
     :param information_col: column that is required to be grouped by states
     :return: dataframe containing information column required from every Natural disaster grouped by State
+    >>> order = ['Hurricanes', 'Tornadoes', 'Wildfires', 'Tsunamis', 'Earthquakes', 'Volcanoes']
+    >>> hurricane = {'Year': [2000, 2001, 2002], 'Total_Damage': [500000, 1100642, 1102750], 'State': ['AL', 'AK', 'AZ']}
+    >>> hurricane = pd.DataFrame.from_dict(hurricane)
+    >>> data = [hurricane, hurricane, hurricane, hurricane, hurricane, hurricane]
+    >>> state = {'State': ['AL', 'AK', 'AZ'], 'State_Name': ['Alabama', 'Alaska', 'Arizona']}
+    >>> state = pd.DataFrame.from_dict(state)
+    >>> retrieve_information_required_by_state(order, data, state, 2000, 2002, 'Total_Damage')
+      State State_Name  Hurricanes  ...  Earthquakes  Volcanoes    Total
+    0    AL    Alabama      500000  ...       500000     500000  3000000
+    1    AK     Alaska     1100642  ...      1100642    1100642  6603852
+    2    AZ    Arizona     1102750  ...      1102750    1102750  6616500
+    <BLANKLINE>
+    [3 rows x 9 columns]
+
     """
     information_retrieved = state_codes[['State', 'State_Name']]
     for disaster_name in natural_disasters_order:
