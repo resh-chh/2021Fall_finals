@@ -1,5 +1,5 @@
 # 2021Fall_finals
-## 597PR Fall 2021 Final Project
+597PR Fall 2021 Final Project
 
 ## Topic: Natural Hazards and its Economic Impacts in the United States
 
