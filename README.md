@@ -5,7 +5,7 @@ Topic: Natural Hazards and its Economic Impacts in the United States
 
 Instructor: John Weible, jweible@illinois.edu
 
-Collaborators:
+Collaborators: \n
     1. Rashmi Chhabria, rashmic2@illinois.edu
     2. Anushri Bhagwath, anushri5@illinois.edu
 
