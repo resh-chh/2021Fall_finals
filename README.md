@@ -30,6 +30,6 @@ Instructions for Execution:
     3. Run all or run cell by cell to see the plots and outputs  
 
 References:  
-    1. Date parser for pandas: https://github.com/iSchool-597PR/Examples_2021Fall/blob/main/week_09/pandas_pt2.ipynb  
-    2. Economic Impacts of Natural Disasters: https://www.journals.uchicago.edu/doi/10.1093/reep/rez004  
-    ** Other examples shown in class from Github may also have been referred  
+    1. https://www.un.org/en/chronicle/article/economic-recovery-after-natural-disasters
+    2. https://www.journals.uchicago.edu/doi/10.1093/reep/rez004
+ 
