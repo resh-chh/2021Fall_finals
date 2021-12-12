@@ -32,4 +32,6 @@ Instructions for Execution:
 References:  
     1. https://www.un.org/en/chronicle/article/economic-recovery-after-natural-disasters
     2. https://www.journals.uchicago.edu/doi/10.1093/reep/rez004
+    3. https://slate.com/news-and-politics/2011/08/how-often-do-hurricanes-and-earthquakes-come-in-pairs.html
+    4. https://sciencing.com/impact-natural-disasters-5502440.html
  
