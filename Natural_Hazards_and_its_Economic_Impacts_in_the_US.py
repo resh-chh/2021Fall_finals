@@ -336,10 +336,9 @@ def find_disaster_occurrence_within_days(disaster1: pd.DataFrame, disaster2: pd.
     >>> disaster_by_state = pd.DataFrame.from_dict(disaster_by_state)
     >>> list_of_disasters = ['Earthquakes','Tsunamis']
     >>> find_disaster_occurrence_within_days(earthquakes,tsunamis,disaster_by_state,list_of_disasters)
-         State Earthquakes Begin_Date Tsunamis Begin_Date
-    Year
-    2000    HI             2003-11-17          2003-11-17
-    2002    AK             2005-06-15          2005-06-17
+       Year State Earthquakes Begin_Date Tsunamis Begin_Date
+    0  2000    HI             2003-11-17          2003-11-17
+    1  2002    AK             2005-06-15          2005-06-17
     """
     disaster_occurrence_by_date = pd.DataFrame(columns=('Year', 'State',
                             disaster_list[0] + ' Begin_Date', disaster_list[1] + ' Begin_Date'))
@@ -356,7 +355,6 @@ def find_disaster_occurrence_within_days(disaster1: pd.DataFrame, disaster2: pd.
                             disaster_list[0] + ' Begin_Date': row['BEGIN_DATE'],
                             disaster_list[1] + ' Begin_Date': value}
                     disaster_occurrence_by_date = disaster_occurrence_by_date.append(dict, ignore_index=True)
-    disaster_occurrence_by_date.set_index('Year', inplace=True)
 
     return disaster_occurrence_by_date
 
