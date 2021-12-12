@@ -29,7 +29,7 @@ hurricanes_data = pd.read_csv('data/hurricanes.csv', header=0,
 # Extracting the year for the event
 hurricanes_data['Year'] = pd.DatetimeIndex(hurricanes_data['BEGIN_DATE']).year
 # Converting the Begin date column into datetime format
-hurricanes_data['BEGIN_DATE'] = hurricanes_data['BEGIN_DATE'].astype('datetime64[ns]')
+hurricanes_data['START_DATE'] = hurricanes_data['BEGIN_DATE'].astype('datetime64[ns]')
 # Calculating total damage caused in $Mil
 hurricanes_data['Total_Damage'] = (hurricanes_data['DAMAGE_PROPERTY_NUM'] + hurricanes_data['DAMAGE_CROPS_NUM']) / 10000000
 
@@ -43,7 +43,7 @@ tornadoes_data['Year'] = pd.DatetimeIndex(tornadoes_data['BEGIN_DATE']).year
 # Calculating total damage caused in $Mil
 tornadoes_data['Total_Damage'] = (tornadoes_data['DAMAGE_PROPERTY_NUM'] + tornadoes_data['DAMAGE_CROPS_NUM']) / 10000000
 # Converting the Begin_date column into datetime format
-tornadoes_data['BEGIN_DATE'] = tornadoes_data['BEGIN_DATE'].astype('datetime64[ns]')
+tornadoes_data['START_DATE'] = tornadoes_data['BEGIN_DATE'].astype('datetime64[ns]')
 
 wildfires_data = pd.read_csv('data/wildfires.csv', header=0, dtype=storm_dtypes,
                              date_parser=dateparser,
@@ -53,7 +53,7 @@ wildfires_data['Year'] = pd.DatetimeIndex(wildfires_data['BEGIN_DATE']).year
 # Calculating total damage caused in $Mil
 wildfires_data['Total_Damage'] = (wildfires_data['DAMAGE_PROPERTY_NUM'] + wildfires_data['DAMAGE_CROPS_NUM']) / 10000000
 # Converting the Begin_date column into datetime format
-wildfires_data['BEGIN_DATE'] = wildfires_data['BEGIN_DATE'].astype('datetime64[ns]')
+wildfires_data['START_DATE'] = wildfires_data['BEGIN_DATE'].astype('datetime64[ns]')
 
 earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0,
                               usecols=['Year', 'Mo', 'Dy', 'Hr', 'Mn', 'Sec', 'Tsu', 'Location Name',
@@ -80,7 +80,7 @@ earthquake_data = pd.read_csv("data/earthquakes.tsv", sep='\t', header=0,
 # Creating a Begin_date column using the Year, Mo and Dy columns and converting it into datetime format
 cols = ["Mo","Dy", "Year"]
 earthquake_data['BEGIN_DATE'] = earthquake_data[cols].apply(lambda x: '-'.join(x.values.astype(str)), axis="columns")
-earthquake_data['BEGIN_DATE'] = earthquake_data['BEGIN_DATE'].astype('datetime64[ns]')
+earthquake_data['START_DATE'] = earthquake_data['BEGIN_DATE'].astype('datetime64[ns]')
 
 earthquake_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 
@@ -108,7 +108,7 @@ tsunamis_data = pd.read_csv('data/tsunamis.tsv', sep='\t', header=0,
 tsunamis_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 # Creating a Begin_date column using the Year, Mo and Dy columns and converting it into datetime format
 tsunamis_data['BEGIN_DATE'] = tsunamis_data[cols].apply(lambda x: '-'.join(x.values.astype(str)), axis="columns")
-tsunamis_data['BEGIN_DATE'] = tsunamis_data['BEGIN_DATE'].astype('datetime64[ns]')
+tsunamis_data['START_DATE'] = tsunamis_data['BEGIN_DATE'].astype('datetime64[ns]')
 
 
 volcanoes_data = pd.read_csv('data/volcanoes.tsv', sep='\t', header=0,
@@ -136,7 +136,7 @@ volcanoes_data = pd.read_csv('data/volcanoes.tsv', sep='\t', header=0,
 volcanoes_data.rename(columns={'Total Damage ($Mil)': 'Total_Damage'}, inplace=True)
 # Creating a Begin_date column using the Year, Mo and Dy columns and converting it into datetime format
 volcanoes_data['BEGIN_DATE'] = volcanoes_data[cols].apply(lambda x: '-'.join(x.values.astype(str)), axis="columns")
-volcanoes_data['BEGIN_DATE'] = volcanoes_data['BEGIN_DATE'].astype('datetime64[ns]')
+volcanoes_data['START_DATE'] = volcanoes_data['BEGIN_DATE'].astype('datetime64[ns]')
 
 GDP_by_state_data = pd.read_csv('data/GDP_by_state.csv', header=0,
                                 dtype={'GeoName': str})

@@ -257,14 +257,9 @@ def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame
     >>> disaster_occurrence = {'Year': [2000, 2002, 2003], 'Earthquakes': [43,9,91], 'Tsunamis' : [45,1,9]}
     >>> disaster_occurrence = pd.DataFrame.from_dict(disaster_occurrence)
     >>> find_combined_disaster_year(list_of_disasters,disaster_occurrence)
-       Year  Earthquakes  Tsunamis
-    0  2000           43        45
-    1  2002            9         1
-    2  2003           91         9
     [2000, 2002, 2003]
     """
     year_list = []
-    print(event_counter)
     for year in event_counter['Year']:
         year_val = event_counter.loc[event_counter['Year'] == year]
         for event1 in year_val[disaster_list[0]]:
@@ -329,7 +324,22 @@ def find_disaster_occurrence_within_days(disaster1: pd.DataFrame, disaster2: pd.
     :param disasters_acc_state: dataframe containing the states,years and the number of times the
                 two natural disasters occurred in same state in the same year.
     :param disaster_list: list of the two natural disasters in question
-    :return:
+    :return: dataframe containing the year, state and begin_dates of both the natural disasters
+          which occur within days of each other.
+    >>> earthquakes = {'Year': [2000, 2001, 2002], 'State': ['HI','AK','AK'],'BEGIN_DATE' : ['2003-11-17','2006-10-15','2005-06-15']}
+    >>> earthquakes = pd.DataFrame.from_dict(earthquakes)
+    >>> earthquakes['START_DATE'] = earthquakes['BEGIN_DATE'].astype('datetime64[ns]')
+    >>> tsunamis = {'Year': [2000, 2002, 2003], 'State': ['HI','AK','CA'],'BEGIN_DATE' : ['2003-11-17','2005-06-17','2006-10-23']}
+    >>> tsunamis = pd.DataFrame.from_dict(tsunamis)
+    >>> tsunamis['START_DATE'] = tsunamis['BEGIN_DATE'].astype('datetime64[ns]')
+    >>> disaster_by_state = {'Year': [2000, 2002], 'State': ['HI','AK']}
+    >>> disaster_by_state = pd.DataFrame.from_dict(disaster_by_state)
+    >>> list_of_disasters = ['Earthquakes','Tsunamis']
+    >>> find_disaster_occurrence_within_days(earthquakes,tsunamis,disaster_by_state,list_of_disasters)
+         State Earthquakes Begin_Date Tsunamis Begin_Date
+    Year
+    2000    HI             2003-11-17          2003-11-17
+    2002    AK             2005-06-15          2005-06-17
     """
     disaster_occurrence_by_date = pd.DataFrame(columns=('Year', 'State',
                             disaster_list[0] + ' Begin_Date', disaster_list[1] + ' Begin_Date'))
@@ -340,8 +350,8 @@ def find_disaster_occurrence_within_days(disaster1: pd.DataFrame, disaster2: pd.
         disaster2_by_dates = disaster2.loc[(disaster2['Year'] == row1['Year']) &
                                            (disaster2['State'] == row1['State'])]
         for index, row in disaster1_by_dates.iterrows():
-            for value in disaster2_by_dates['BEGIN_DATE'].values:
-                if row['BEGIN_DATE'] <= value <= row['BEGIN_DATE']+datetime.timedelta(days=5):
+            for value in disaster2_by_dates['START_DATE'].values:
+                if row['START_DATE'] <= value <= row['START_DATE']+datetime.timedelta(days=5):
                     dict = {'Year': row1['Year'], 'State': row1['State'],
                             disaster_list[0] + ' Begin_Date': row['BEGIN_DATE'],
                             disaster_list[1] + ' Begin_Date': value}
