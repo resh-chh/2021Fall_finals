@@ -145,6 +145,15 @@ def yearwise_statewise_event_summary_plot(event_dataset_list: list, year_list: l
     :param disaster_list: list of the two natural disasters in question
     :return: dataframe containing the states,years and the number of times the two natural disasters
              occurred in same state in the same year.
+    >>> years = [2000,2002]
+    >>> list_of_disaster = ['Earthquakes','Tsunamis']
+    >>> earthquakes = {'Year': [2000, 2001, 2002], 'State': ['HI','AK','AK']}
+    >>> earthquakes = pd.DataFrame.from_dict(earthquakes)
+    >>> tsunamis = {'Year': [2000, 2002, 2003], 'State': ['HI','CA','AK']}
+    >>> tsunamis = pd.DataFrame.from_dict(tsunamis)
+    >>> yearwise_statewise_event_summary_plot([earthquakes,tsunamis], years, list_of_disaster)
+      State  Earthquakes  Tsunamis  Year
+    0    HI            1         1  2000
     """
     yearly_statewise_event = pd.DataFrame(columns=['State', disaster_list[0], disaster_list[1], 'Year'])
 
@@ -244,8 +253,18 @@ def find_combined_disaster_year(disaster_list: list, event_counter: pd.DataFrame
     :param event_counter: dataframe containing the number of times the natural disasters have
                      occurred in each year
     :return:list of years in which the two natural disasters have occurred together
+    >>> list_of_disasters = ['Earthquakes','Tsunamis']
+    >>> disaster_occurrence = {'Year': [2000, 2002, 2003], 'Earthquakes': [43,9,91], 'Tsunamis' : [45,1,9]}
+    >>> disaster_occurrence = pd.DataFrame.from_dict(disaster_occurrence)
+    >>> find_combined_disaster_year(list_of_disasters,disaster_occurrence)
+       Year  Earthquakes  Tsunamis
+    0  2000           43        45
+    1  2002            9         1
+    2  2003           91         9
+    [2000, 2002, 2003]
     """
     year_list = []
+    print(event_counter)
     for year in event_counter['Year']:
         year_val = event_counter.loc[event_counter['Year'] == year]
         for event1 in year_val[disaster_list[0]]:
