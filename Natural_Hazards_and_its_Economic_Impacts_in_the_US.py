@@ -18,6 +18,8 @@ from importing_data_files import *
 import matplotlib.pyplot as plt
 from IPython.display import display
 import numpy as np
+import datetime
+
 
 def yearly_event_summary(natural_disasters_order: list, natural_disasters_data: list) -> (pd.DataFrame, pd.DataFrame):
     """
@@ -296,4 +298,36 @@ def retrieve_information_required_by_state(natural_disasters_order: list, natura
     return information_retrieved
 
 
-# def find_date_wise_disasters(disasters_by_state:pd.DataFrame, disaster1: pd.DataFrame, disaster2: pd.DataFrame):
+def find_disaster_occurrence_within_days(disaster1: pd.DataFrame, disaster2: pd.DataFrame,
+                                         disasters_acc_state: pd.DataFrame, disaster_list : list) -> pd.DataFrame:
+    """
+    Find if the two natural disasters occur within 5 days of each other. If yes, store the year of
+    occurrence, state in which the disasters occurred and the begin dates of both the natural disasters
+    in a dataframe.
+
+    :param disaster1: dataframe of the first natural disaster
+    :param disaster2: dataframe of the second natural disaster
+    :param disasters_acc_state: dataframe containing the states,years and the number of times the
+                two natural disasters occurred in same state in the same year.
+    :param disaster_list: list of the two natural disasters in question
+    :return:
+    """
+    disaster_occurrence_by_date = pd.DataFrame(columns=('Year', 'State',
+                            disaster_list[0] + ' Begin_Date', disaster_list[1] + ' Begin_Date'))
+
+    for index1, row1 in disasters_acc_state.iterrows():
+        disaster1_by_dates = disaster1.loc[(disaster1['Year'] == row1['Year']) &
+                                           (disaster1['State'] == row1['State'])]
+        disaster2_by_dates = disaster2.loc[(disaster2['Year'] == row1['Year']) &
+                                           (disaster2['State'] == row1['State'])]
+        for index, row in disaster1_by_dates.iterrows():
+            for value in disaster2_by_dates['BEGIN_DATE'].values:
+                if row['BEGIN_DATE'] <= value <= row['BEGIN_DATE']+datetime.timedelta(days=5):
+                    dict = {'Year': row1['Year'], 'State': row1['State'],
+                            disaster_list[0] + ' Begin_Date': row['BEGIN_DATE'],
+                            disaster_list[1] + ' Begin_Date': value}
+                    disaster_occurrence_by_date = disaster_occurrence_by_date.append(dict, ignore_index=True)
+    disaster_occurrence_by_date.set_index('Year', inplace=True)
+
+    return disaster_occurrence_by_date
+
